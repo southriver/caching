@@ -1,8 +1,16 @@
 // redis.js
+const path = require("path");
+
+require("dotenv").config({ path: path.resolve(__dirname, "../.env") });
+
 const { createClient } = require("redis");
 
-const redisClient = createClient();      // normal ops
-const redisSubscriber = createClient();  // pub/sub
+if (!process.env.REDIS_URL) {
+  throw new Error("REDIS_URL is not set");
+}
+
+const redisClient = createClient({ url: process.env.REDIS_URL });      // normal ops
+const redisSubscriber = createClient({ url: process.env.REDIS_URL });  // pub/sub
 
 redisClient.on("error", (err) => console.error("RedisClient error", err));
 redisSubscriber.on("error", (err) => console.error("RedisSub error", err));

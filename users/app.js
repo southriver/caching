@@ -1,6 +1,6 @@
 // app.js
 const express = require("express");
-const { getUsersCached } = require("./usersService");
+const { getUsersCached } = require("../usersService");
 
 const app = express();
 

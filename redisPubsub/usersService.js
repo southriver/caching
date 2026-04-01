@@ -1,5 +1,5 @@
 // usersService.js
-const db = require("./db");
+const db = require("../db");
 const { setCache, getCache } = require("./cache");
 const { redisClient } = require("./redis");
 
