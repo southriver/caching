@@ -3,7 +3,7 @@ const express = require("express");
 const bodyParser = require("body-parser");
 
 const { getUsersCached, invalidateUsersCache, insertUser, updateUser } =
-  require("./usersServiceInvalidate");
+  require("./usersServiceRedisInvalidate");
 // use usersServiceRedisInvalidate for redis
 const app = express();
 app.use(express.json());

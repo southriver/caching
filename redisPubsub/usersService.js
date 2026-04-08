@@ -1,5 +1,5 @@
 // usersService.js
-const db = require("../db");
+const db = require("./db");
 const { setCache, getCache } = require("./cache");
 const { redisClient } = require("./redis");
 
@@ -69,7 +69,7 @@ function updateUser(id, name, email) {
 }
 
 // 🔑 central invalidation: DEL + PUBLISH
-async function invalidateUsersCache() {
+async function invalidateUsersCache(change = {}) {
   console.log("🧹 Invalidating users cache in Redis and all nodes");
 
   // 1. Delete from L2
@@ -78,7 +78,12 @@ async function invalidateUsersCache() {
   // 2. Broadcast to all instances to clear L1
   await redisClient.publish(
     "cache-invalidation",
-    JSON.stringify({ key: CACHE_KEY, entity: "users" })
+    JSON.stringify({
+      key: CACHE_KEY,
+      entity: "users",
+      changedAt: new Date().toISOString(),
+      ...change,
+    })
   );
 }
 

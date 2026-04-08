@@ -46,7 +46,7 @@ app.post("/users", async (req, res) => {
     const { name, email } = req.body;
     const user = await insertUser(name, email);
 
-    await invalidateUsersCache(); // publish + DEL
+    await invalidateUsersCache({ action: "insert", user }); // publish + DEL
     res.json({ success: true, user });
   } catch (err) {
     console.error(err);
@@ -60,7 +60,7 @@ app.put("/users/:id", async (req, res) => {
     const { name, email } = req.body;
     const updated = await updateUser(id, name, email);
 
-    await invalidateUsersCache(); // publish + DEL
+    await invalidateUsersCache({ action: "update", user: updated }); // publish + DEL
     res.json({ success: true, updated });
   } catch (err) {
     console.error(err);
